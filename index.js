@@ -17,6 +17,8 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
+app.use("/api/v1/auth", require("./routes/authRoutes"));
+
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>Welcome to food App</h1> ");
 });
