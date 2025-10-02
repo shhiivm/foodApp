@@ -40,7 +40,7 @@ Installation
 
 Clone the repository:
 
-git clone https://github.com/shhiivm/food-app-backend.git
+git clone https://github.com/shhiivm/foodApp.git
 cd food-app-backend
 
 Install dependencies:
@@ -111,6 +111,7 @@ Success Response:
 
 Project Structure
 
+```
 food-app-backend/
 │-- config/
 │ └── dbconfig.js
@@ -123,3 +124,5 @@ food-app-backend/
 │-- index.js
 │-- package.json
 │-- .env
+
+```
