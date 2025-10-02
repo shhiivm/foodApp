@@ -40,76 +40,29 @@ Installation
 
 Clone the repository:
 
+```
 git clone https://github.com/shhiivm/foodApp.git
-cd food-app-backend
+cd foodApp
+```
 
 Install dependencies:
 
-npm install
+`npm install`
 
 Create a .env file in the root directory and add your environment variables:
 
+```
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
+```
 
 Start the server:
 
-npm run dev
+`npm run dev`
 
 API Endpoints
 Base URL
 http://localhost:5000/api/v1
-
-Auth Routes
-
-1. Register a New User
-
-POST /auth/register
-
-Request Body:
-
-{
-"username": "alex_rivera",
-"email": "alex.rivera@example.com",
-"password": "S3cure!x9aQ#2025",
-"address": "Apartment 4B, 128 Willow Lane, Springfield, IL 62704, USA",
-"phone": "+1-217-555-0147"
-}
-
-Success Response:
-
-{
-"success": true,
-"message": "User registered successfully",
-"user": {
-"id": "652b1348c29f1b2a7fbe9d1e",
-"username": "alex_rivera",
-"email": "alex.rivera@example.com",
-"address": "Apartment 4B, 128 Willow Lane, Springfield, IL 62704, USA",
-"phone": "+1-217-555-0147"
-}
-}
-
-2. Login User
-
-POST /auth/login
-
-Request Body:
-
-{
-"email": "alex.rivera@example.com",
-"password": "S3cure!x9aQ#2025"
-}
-
-Success Response:
-
-{
-"success": true,
-"message": "Login successful",
-"token": "jwt_token_here"
-}
-
-Project Structure
 
 ```
 food-app-backend/
