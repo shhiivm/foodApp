@@ -3,11 +3,15 @@ const colors = require("colors");
 const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
+const dbconfig = require("./config/dbconfig");
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+//DB connection
+dbconfig();
 
 app.use(express.json());
 app.use(cors());
