@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Registration
 
@@ -66,12 +67,15 @@ const loginController = async (req, res) => {
         .send({ success: false, message: "Invalid email or password" });
     }
 
-    return res
-      .status(200)
-      .send({
-        success: true,
-        message: `Login success! Welcome back ${user.username}`,
-      });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    user.password = undefined; // Hide password in output
+    return res.status(200).send({
+      success: true,
+      token,
+      message: `Login success! Welcome back ${user.username}`,
+    });
   } catch (error) {
     console.log(error);
     return res
