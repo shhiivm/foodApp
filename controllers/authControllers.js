@@ -1,73 +1,83 @@
-//REGISTER
 const userModel = require("../models/userModel");
+const bcrypt = require("bcrypt");
+
+// Registration
 
 const registerController = async (req, res) => {
   try {
     const { username, email, password, address, phone } = req.body;
-    //Validation
     if (!username || !email || !password || !address || !phone) {
-      res.status(500).send({
-        success: false,
-        message: "All fields required",
-      });
+      return res
+        .status(400)
+        .send({ success: false, message: "All fields required" });
     }
 
-    // Existing email
     const existing = await userModel.findOne({ email });
     if (existing) {
-      res.status(500).send({
-        success: false,
-        message: "This email already exist",
-      });
+      return res
+        .status(409)
+        .send({ success: false, message: "Email already exists" });
     }
 
-    //Create new user
+    const hashPassword = await bcrypt.hash(password, 10);
+
     const user = await userModel.create({
       username,
       email,
-      password,
+      password: hashPassword,
       address,
       phone,
     });
-    res.status(200).send({
+
+    return res.status(201).send({
       success: true,
-      message: "Account creation sucess",
+      message: `${user.username} Your Account has created successfully`,
     });
   } catch (error) {
     console.log("Cannot fetch data", error);
+    return res
+      .status(500)
+      .send({ success: false, message: "Reg Internal Server Error" });
   }
 };
 
-
-// LOGIN
+// Login
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      res.status(500).send({
-        success: false,
-        message: "Email or password cant be empty",
-      });
+      return res
+        .status(400)
+        .send({ success: false, message: "Email or password can't be empty" });
     }
 
-    const user = await userModel.findOne({ email: email, password: password });
+    const user = await userModel.findOne({ email: email });
 
     if (!user) {
-      res.status(500).send({
-        success: false,
-        message: "Mismatch email and password",
-      });
+      return res
+        .status(401)
+        .send({ success: false, message: "Invalid email or password" });
     }
-    res.status(200).send({
-      success: true,
-      message: "Login sucess",
-    });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .send({ success: false, message: "Invalid email or password" });
+    }
+
+    return res
+      .status(200)
+      .send({
+        success: true,
+        message: `Login success! Welcome back ${user.username}`,
+      });
   } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: error,
-    });
     console.log(error);
+    return res
+      .status(500)
+      .send({ success: false, message: "Log Internal Server Error" });
   }
 };
+
 module.exports = { loginController, registerController };
