@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2025/08/28/11/47/user-9801866_1280.png",
     },
+    answer: {
+      type: String,
+      require: [true, "Answer is required"],
+    },
   },
   { timestamps: true }
 );

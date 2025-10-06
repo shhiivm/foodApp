@@ -106,8 +106,44 @@ const updatePasswordController = async (req, res) => {
   }
 };
 
+
+//RESET PASSWORD
+const resetPasswordController = async (req, res) => {
+  try {
+    const { email, newPass, answer } = req.body;
+    if (!email || !newPass || !answer) {
+      return res.status(500).send({
+        success: false,
+        message: "Please provide all fields",
+      });
+    }
+    const user = await userModel.findOne({ email, answer });
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found or invalid answer",
+      });
+    }
+    const hashPassword = await bcrypt.hash(newPass, 10);
+    user.password = hashPassword;
+    await user.save();
+    res.status(200).send({
+      success: true,
+      message: "Password Reset sucessfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(501).send({
+      success: false,
+      message: "Error Occurred",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getUserController,
   updateUserController,
   updatePasswordController,
+  resetPasswordController,
 };
