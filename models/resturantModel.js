@@ -27,7 +27,7 @@ const resturantModel = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    logUrl: {
+    logoUrl: {
       type: String,
     },
     rating: {
