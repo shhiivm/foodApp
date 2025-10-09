@@ -45,4 +45,67 @@ const createResturantController = async (req, res) => {
   }
 };
 
-module.exports = createResturantController;
+//GET ALL RESTURANT
+const getAllResturantController = async (req, res) => {
+  try {
+    const resturants = await resturantModel.find({});
+    if (!resturants) {
+      return res.status(404).send({
+        success: false,
+        message: "Cannot find resturant",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      totalcCount: resturants.length,
+      resturants,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in get All Resturant API",
+      error,
+    });
+  }
+};
+
+//GET RESTURANT BY ID
+const getResturantByIdController = async (req, res) => {
+  try {
+    const resturantId = req.params.id;
+    if (!resturantId) {
+      return res.status(404).send({
+        success: false,
+        message: "Please provide resturant id",
+      });
+    }
+
+    const resturant = await resturantModel.findById(resturantId);
+
+    if (!resturant) {
+      return res.status(404).send({
+        success: false,
+        message: "Cannot find resturant",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "resturant found",
+      resturant,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting resturant Id API",
+      error,
+    });
+  }
+};
+
+module.exports = {
+  createResturantController,
+  getAllResturantController,
+  getResturantByIdController,
+};
